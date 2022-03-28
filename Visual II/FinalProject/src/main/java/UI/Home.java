@@ -5,17 +5,17 @@
  */
 package UI;
 
+import Data.prices;
+import Data.conversions;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
 import java.util.*;
 import java.util.ArrayList; 
 import javax.swing.DefaultListModel;
 
-import net.jacobpeterson.alpaca.AlpacaAPI;
-import net.jacobpeterson.alpaca.model.endpoint.account.Account;
-import net.jacobpeterson.alpaca.model.endpoint.order.Order;
-import net.jacobpeterson.alpaca.model.endpoint.order.enums.OrderSide;
-import net.jacobpeterson.alpaca.model.endpoint.order.enums.OrderTimeInForce;
-import net.jacobpeterson.alpaca.model.endpoint.position.Position;
-import net.jacobpeterson.alpaca.rest.AlpacaClientException;
 
 /**
  *
@@ -23,61 +23,65 @@ import net.jacobpeterson.alpaca.rest.AlpacaClientException;
  */
 public class Home extends javax.swing.JFrame {
     
-    public static Account account;
-    public static AlpacaAPI alpacaAPI;
-
-    public static Home self;
+    private static prices prices; 
+    private static conversions conversions;
     
-    private List<Position> positions; 
-    private DefaultListModel positionList;
-    
-    
+    private Timer timer;
+   
     /**
      * Creates new form Home
      */
     public Home() {
         initComponents();
         
-        this.self = this;
-        
-        this.positions = new ArrayList<Position>();
-        this.positionList = new DefaultListModel();
-        
-        /////////////////////////////////////////////////////////////           CREATES ACCOUNT ENDPOINT            /////////////////////////////////////////////////////////////  
-        
-        this.alpacaAPI = new AlpacaAPI();
-        
-        try {
-            // Get 'Account' information and print it out
-            this.account = this.alpacaAPI.account().get();
-            System.out.println(this.account);
-        } catch (AlpacaClientException exception) {
-            exception.printStackTrace();
-        }
+        this.prices = new prices();
+        this.conversions = new conversions();
         
         updateUI();
         
+        int delay = 1000; 
+        ActionListener taskPerformer = new ActionListener(){
+            public void actionPerformed(ActionEvent evt){
+                updateUI();
+            }
+        };
+        this.timer = new javax.swing.Timer(delay, taskPerformer);
+        this.timer.setInitialDelay(0);
+        this.timer.start();
+        
     }
     
-    private void updateUI(){
+    public void updateUI(){
+        ///////////////////////////     UPDATE CONVERSION RATES     ///////////////////////////
+        this.prices.updatePrices();
         
-        try{
-            this.positions = this.alpacaAPI.positions().get();
-        } catch (AlpacaClientException exception) {
-            exception.printStackTrace();
-        }
+        String rate1 = String.valueOf(this.prices.getBTCLTCRate());
+        this.btcltcRateLbl.setText(rate1);
+        System.out.println(rate1);
         
-        this.positionList.clear();
+        String rate2 = String.valueOf(this.prices.getLTCETHRate());
+        this.ltcethRateLbl.setText(rate2);
+        System.out.println(rate2);
         
-        for(Position openPosition : this.positions){
-            this.positionList.addElement(openPosition.getSymbol());
-        }
+        String rate3 = String.valueOf(this.prices.getETHBTCRate());
+        this.ethbtcRateLbl.setText(rate3); 
+        System.out.println(rate3);
         
-        jList1.setModel(this.positionList); 
+        ///////////////////////////     UPDATE COIN AMOUNTS     ///////////////////////////
+        this.conversions.updateAmts();
         
-        this.jLabel1.setText(this.account.getPortfolioValue());
+        String btcStart = String.valueOf(this.conversions.getbtcStart());
+        this.btcAmtStart.setText(btcStart);
+        
+        String ltcAmt = String.valueOf(this.conversions.getltcAmt());
+        this.ltcAmt.setText(ltcAmt);
+        
+        String ethAmt = String.valueOf(this.conversions.getethAmt());
+        this.ethAmt.setText(ethAmt);
+        
+        String btcFinal = String.valueOf(this.conversions.getbtcFinal());
+        this.btcAmtFinal.setText(btcFinal); 
     }
-    
     
     
     /**
@@ -89,125 +93,142 @@ public class Home extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jLabel2 = new javax.swing.JLabel();
-        buyBTN = new javax.swing.JToggleButton();
-        sellBTN = new javax.swing.JToggleButton();
-        refreshBTN = new javax.swing.JToggleButton();
+        homeBackground = new javax.swing.JPanel();
+        titleLbl = new javax.swing.JLabel();
+        ltcLbl = new javax.swing.JLabel();
+        btcLbl = new javax.swing.JLabel();
+        ethLbl = new javax.swing.JLabel();
+        btcltcRateLbl = new javax.swing.JLabel();
+        ltcethRateLbl = new javax.swing.JLabel();
+        ethbtcRateLbl = new javax.swing.JLabel();
+        btcAmtStart = new javax.swing.JLabel();
+        ethAmt = new javax.swing.JLabel();
+        ltcAmt = new javax.swing.JLabel();
+        btcAmtFinal = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("jLabel1");
+        titleLbl.setFont(new java.awt.Font("Sitka Heading", 0, 18)); // NOI18N
+        titleLbl.setText("Bitcoin Triangular Arbitrage Bot");
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane1.setViewportView(jList1);
+        ltcLbl.setFont(new java.awt.Font("Sitka Display", 1, 14)); // NOI18N
+        ltcLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ltcLbl.setText("LTC");
 
-        jLabel2.setText("Positions");
+        btcLbl.setFont(new java.awt.Font("Sitka Display", 1, 14)); // NOI18N
+        btcLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btcLbl.setText("BTC");
 
-        buyBTN.setText("Buy AAPL");
-        buyBTN.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                buyBTNMouseClicked(evt);
-            }
-        });
+        ethLbl.setFont(new java.awt.Font("Sitka Display", 1, 14)); // NOI18N
+        ethLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ethLbl.setText("ETH");
 
-        sellBTN.setText("Sell AAPL");
-        sellBTN.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                sellBTNMouseClicked(evt);
-            }
-        });
+        btcltcRateLbl.setFont(new java.awt.Font("Sitka Text", 0, 12)); // NOI18N
+        btcltcRateLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btcltcRateLbl.setText("btcltc");
 
-        refreshBTN.setText("Refresh");
-        refreshBTN.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                refreshBTNMouseClicked(evt);
-            }
-        });
+        ltcethRateLbl.setFont(new java.awt.Font("Sitka Text", 0, 12)); // NOI18N
+        ltcethRateLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ltcethRateLbl.setText("ltceth");
+
+        ethbtcRateLbl.setFont(new java.awt.Font("Sitka Text", 0, 12)); // NOI18N
+        ethbtcRateLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ethbtcRateLbl.setText("ethbtc");
+
+        btcAmtStart.setFont(new java.awt.Font("Sitka Text", 0, 12)); // NOI18N
+        btcAmtStart.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btcAmtStart.setText("btcStart");
+
+        ethAmt.setFont(new java.awt.Font("Sitka Text", 0, 12)); // NOI18N
+        ethAmt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ethAmt.setText("ethAmt");
+
+        ltcAmt.setFont(new java.awt.Font("Sitka Text", 0, 12)); // NOI18N
+        ltcAmt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ltcAmt.setText("ltcAmt");
+
+        btcAmtFinal.setFont(new java.awt.Font("Sitka Text", 0, 12)); // NOI18N
+        btcAmtFinal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btcAmtFinal.setText("btcAmt");
+
+        javax.swing.GroupLayout homeBackgroundLayout = new javax.swing.GroupLayout(homeBackground);
+        homeBackground.setLayout(homeBackgroundLayout);
+        homeBackgroundLayout.setHorizontalGroup(
+            homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homeBackgroundLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(ethbtcRateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(162, 162, 162)
+                .addComponent(btcltcRateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(403, 403, 403))
+            .addGroup(homeBackgroundLayout.createSequentialGroup()
+                .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(homeBackgroundLayout.createSequentialGroup()
+                        .addGap(363, 363, 363)
+                        .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(titleLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(homeBackgroundLayout.createSequentialGroup()
+                                .addComponent(btcAmtFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btcLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btcAmtStart, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(homeBackgroundLayout.createSequentialGroup()
+                        .addGap(158, 158, 158)
+                        .addComponent(ethAmt, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ethLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(149, 149, 149)
+                        .addComponent(ltcethRateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 162, Short.MAX_VALUE)
+                        .addComponent(ltcLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ltcAmt, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(186, Short.MAX_VALUE))
+        );
+        homeBackgroundLayout.setVerticalGroup(
+            homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(homeBackgroundLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(titleLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btcLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btcAmtStart, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btcAmtFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
+                .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btcltcRateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ethbtcRateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(homeBackgroundLayout.createSequentialGroup()
+                        .addGap(120, 120, 120)
+                        .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ltcLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ethLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ltcethRateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(171, 171, 171))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homeBackgroundLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ltcAmt, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ethAmt, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(147, 147, 147))))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(153, 153, 153)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(33, 33, 33)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(refreshBTN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(sellBTN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(buyBTN, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(85, 85, 85)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(39, Short.MAX_VALUE))
+            .addComponent(homeBackground, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(refreshBTN)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(sellBTN)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(buyBTN))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE))
-                .addContainerGap())
+            .addComponent(homeBackground, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void buyBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buyBTNMouseClicked
-        try {
-            Order aaplLimitOrder = this.alpacaAPI.orders().requestMarketOrder("AAPL", 1, OrderSide.BUY, OrderTimeInForce.DAY);
-                    
-            System.out.printf("Requested %s %s order at %s\n",
-                    aaplLimitOrder.getSymbol(),
-                    aaplLimitOrder.getType(),
-                    aaplLimitOrder.getSubmittedAt());      
-        } catch (AlpacaClientException exception) {
-            exception.printStackTrace();
-        }
-        
-        updateUI();
-    }//GEN-LAST:event_buyBTNMouseClicked
-
-    private void sellBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sellBTNMouseClicked
-        try {
-            Order aaplLimitOrder = Home.alpacaAPI.orders().requestMarketOrder("AAPL", 1, OrderSide.SELL, OrderTimeInForce.DAY);
-                    
-            System.out.printf("Requested %s %s order at %s\n",
-                    aaplLimitOrder.getSymbol(),
-                    aaplLimitOrder.getType(),
-                    aaplLimitOrder.getSubmittedAt());
-        } catch (AlpacaClientException exception) {
-            exception.printStackTrace();
-        }
-        
-        updateUI();
-    }//GEN-LAST:event_sellBTNMouseClicked
-
-    private void refreshBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshBTNMouseClicked
-        updateUI();
-    }//GEN-LAST:event_refreshBTNMouseClicked
 
     /**
      * @param args the command line arguments
@@ -245,12 +266,17 @@ public class Home extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton buyBTN;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JToggleButton refreshBTN;
-    private javax.swing.JToggleButton sellBTN;
+    private javax.swing.JLabel btcAmtFinal;
+    private javax.swing.JLabel btcAmtStart;
+    private javax.swing.JLabel btcLbl;
+    private javax.swing.JLabel btcltcRateLbl;
+    private javax.swing.JLabel ethAmt;
+    private javax.swing.JLabel ethLbl;
+    private javax.swing.JLabel ethbtcRateLbl;
+    private javax.swing.JPanel homeBackground;
+    private javax.swing.JLabel ltcAmt;
+    private javax.swing.JLabel ltcLbl;
+    private javax.swing.JLabel ltcethRateLbl;
+    private javax.swing.JLabel titleLbl;
     // End of variables declaration//GEN-END:variables
 }
