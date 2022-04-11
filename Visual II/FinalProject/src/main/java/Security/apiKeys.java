@@ -21,9 +21,6 @@ public class apiKeys {
         this.binanceAPI = "TaFvm4InXL5RGMecPHN3J9u0ocqtD4e3p0iYcWdgFaH5eBDuDn2e4EYCP5kF3lc5";
         this.binanceSecret = "Jg4fzRum44joCV8BcvDO9IimecgPMxLtVQ06SudMp4KMRSsBFkB4T5rIA5uOFXD4";
         
-        
-        
-        
     }
     
     public String getBinanceAPI(){
