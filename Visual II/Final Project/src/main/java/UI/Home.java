@@ -5,62 +5,85 @@
  */
 package UI;
 
-import Data.Prices;
-import Data.Conversions;
+import Data.prices;
+import Data.conversions;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
+import java.util.*;
+import java.util.ArrayList; 
+import javax.swing.DefaultListModel;
+
 
 /**
  *
  * @author Owner
  */
-public class TrianglePanel extends javax.swing.JPanel {
-
-    private static Prices prices; 
-    private static Conversions conversions;
+public class Home extends javax.swing.JFrame {
     
+    private static prices prices; 
+    private static conversions conversions;
+    
+    private Timer timer;
+   
     /**
-     * Creates new form Triangle
+     * Creates new form Home
      */
-    public TrianglePanel() {
-        
-        this.prices = new Prices();
-        this.conversions = new Conversions(); 
-        
+    public Home() {
         initComponents();
         
+        this.prices = new prices();
+        this.conversions = new conversions();
+        
+        updateUI();
+        
+        int delay = 1000; 
+        ActionListener taskPerformer = new ActionListener(){
+            public void actionPerformed(ActionEvent evt){
+                updateUI();
+            }
+        };
+        this.timer = new javax.swing.Timer(delay, taskPerformer);
+        this.timer.setInitialDelay(0);
+        this.timer.start();
+        
     }
     
-    public void updateTriangleUI(){
-        if(this.prices != null)
-        {
-            ///////////////////////////     UPDATE CONVERSION RATES     ///////////////////////////
-            this.prices.updatePrices();
-
-            String rate1 = String.format("%.5f", this.prices.getBTCLTCRate());
-            this.btcltcRateLbl.setText(rate1);
-
-            String rate2 = String.format("%.5f", this.prices.getLTCETHRate());
-            this.ltcethRateLbl.setText(rate2);
-            
-            String rate3 = String.format("%.5f", this.prices.getETHBTCRate());
-            this.ethbtcRateLbl.setText(rate3); 
-            
-            ///////////////////////////     UPDATE COIN AMOUNTS     ///////////////////////////
-            this.conversions.updateAmts();
-
-            String btcStart = String.format("%.5f", this.conversions.getbtcStart());
-            this.btcAmtStart.setText(btcStart);
-
-            String ltcAmt = String.format("%.5f", this.conversions.getltcAmt());
-            this.ltcAmt.setText(ltcAmt);
-
-            String ethAmt = String.format("%.5f", this.conversions.getethAmt());
-            this.ethAmt.setText(ethAmt);
-
-            String btcFinal = String.format("%.5f", this.conversions.getbtcFinal());
-            this.btcAmtFinal.setText(btcFinal); 
-        }
+    public void updateUI(){
+        ///////////////////////////     UPDATE CONVERSION RATES     ///////////////////////////
+        this.prices.updatePrices();
+        
+        String rate1 = String.valueOf(this.prices.getBTCLTCRate());
+        this.btcltcRateLbl.setText(rate1);
+        System.out.println(rate1);
+        
+        String rate2 = String.valueOf(this.prices.getLTCETHRate());
+        this.ltcethRateLbl.setText(rate2);
+        System.out.println(rate2);
+        
+        String rate3 = String.valueOf(this.prices.getETHBTCRate());
+        this.ethbtcRateLbl.setText(rate3); 
+        System.out.println(rate3);
+        
+        ///////////////////////////     UPDATE COIN AMOUNTS     ///////////////////////////
+        this.conversions.updateAmts();
+        
+        String btcStart = String.valueOf(this.conversions.getbtcStart());
+        this.btcAmtStart.setText(btcStart);
+        
+        String ltcAmt = String.valueOf(this.conversions.getltcAmt());
+        this.ltcAmt.setText(ltcAmt);
+        
+        String ethAmt = String.valueOf(this.conversions.getethAmt());
+        this.ethAmt.setText(ethAmt);
+        
+        String btcFinal = String.valueOf(this.conversions.getbtcFinal());
+        this.btcAmtFinal.setText(btcFinal); 
     }
-
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -83,6 +106,8 @@ public class TrianglePanel extends javax.swing.JPanel {
         ltcAmt = new javax.swing.JLabel();
         btcAmtFinal = new javax.swing.JLabel();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
         titleLbl.setFont(new java.awt.Font("Sitka Heading", 0, 18)); // NOI18N
         titleLbl.setText("Bitcoin Triangular Arbitrage Bot");
 
@@ -100,31 +125,31 @@ public class TrianglePanel extends javax.swing.JPanel {
 
         btcltcRateLbl.setFont(new java.awt.Font("Sitka Text", 0, 12)); // NOI18N
         btcltcRateLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btcltcRateLbl.setText("");
+        btcltcRateLbl.setText("btcltc");
 
         ltcethRateLbl.setFont(new java.awt.Font("Sitka Text", 0, 12)); // NOI18N
         ltcethRateLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        ltcethRateLbl.setText("");
+        ltcethRateLbl.setText("ltceth");
 
         ethbtcRateLbl.setFont(new java.awt.Font("Sitka Text", 0, 12)); // NOI18N
         ethbtcRateLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        ethbtcRateLbl.setText("");
+        ethbtcRateLbl.setText("ethbtc");
 
         btcAmtStart.setFont(new java.awt.Font("Sitka Text", 0, 12)); // NOI18N
         btcAmtStart.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btcAmtStart.setText("");
+        btcAmtStart.setText("btcStart");
 
         ethAmt.setFont(new java.awt.Font("Sitka Text", 0, 12)); // NOI18N
         ethAmt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        ethAmt.setText("");
+        ethAmt.setText("ethAmt");
 
         ltcAmt.setFont(new java.awt.Font("Sitka Text", 0, 12)); // NOI18N
         ltcAmt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        ltcAmt.setText("");
+        ltcAmt.setText("ltcAmt");
 
         btcAmtFinal.setFont(new java.awt.Font("Sitka Text", 0, 12)); // NOI18N
         btcAmtFinal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btcAmtFinal.setText("");
+        btcAmtFinal.setText("btcAmt");
 
         javax.swing.GroupLayout homeBackgroundLayout = new javax.swing.GroupLayout(homeBackground);
         homeBackground.setLayout(homeBackgroundLayout);
@@ -133,9 +158,9 @@ public class TrianglePanel extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homeBackgroundLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(ethbtcRateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(163, 163, 163)
-                .addComponent(btcltcRateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(377, 377, 377))
+                .addGap(162, 162, 162)
+                .addComponent(btcltcRateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(403, 403, 403))
             .addGroup(homeBackgroundLayout.createSequentialGroup()
                 .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(homeBackgroundLayout.createSequentialGroup()
@@ -155,11 +180,11 @@ public class TrianglePanel extends javax.swing.JPanel {
                         .addComponent(ethLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(149, 149, 149)
                         .addComponent(ltcethRateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 175, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 162, Short.MAX_VALUE)
                         .addComponent(ltcLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ltcAmt, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(177, Short.MAX_VALUE))
+                .addContainerGap(186, Short.MAX_VALUE))
         );
         homeBackgroundLayout.setVerticalGroup(
             homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -171,7 +196,7 @@ public class TrianglePanel extends javax.swing.JPanel {
                     .addComponent(btcLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btcAmtStart, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btcAmtFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
                 .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btcltcRateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ethbtcRateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -191,22 +216,55 @@ public class TrianglePanel extends javax.swing.JPanel {
                         .addGap(147, 147, 147))))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(homeBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(homeBackground, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(homeBackground, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(homeBackground, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
+
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Home().setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel btcAmtFinal;
