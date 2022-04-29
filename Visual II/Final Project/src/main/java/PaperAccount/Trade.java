@@ -18,9 +18,9 @@ public class Trade {
     private double gain;
     private double percentGain;
     private LocalDateTime tradeDate;
-    private LocalTime executionSpeed;
+    private double executionSpeed;
     
-    public Trade(double start, double end, LocalTime speed){
+    public Trade(double start, double end, double speed){
         this.startAmt = start;
         this.finalAmt = end;
         
@@ -51,7 +51,7 @@ public class Trade {
         return this.tradeDate;
     }
     
-    public LocalTime getSpeed(){
+    public double getSpeed(){
         return this.executionSpeed;
     }
 }

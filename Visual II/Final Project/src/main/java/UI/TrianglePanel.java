@@ -7,6 +7,10 @@ package UI;
 
 import Data.Prices;
 import Data.Conversions;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import java.awt.Image;
+import java.awt.Toolkit;
 
 /**
  *
@@ -22,11 +26,27 @@ import Data.Conversions;
     */
 
     public TrianglePanel() {
+        int scalar = 58; 
         this.prices = new Prices();
         this.conversions = new Conversions(); 
         
         initComponents();
         
+        Image btcImage = Toolkit.getDefaultToolkit().getImage("src\\main\\java\\resources\\btcImg.png");
+        btcImage = btcImage.getScaledInstance(scalar, scalar, scalar); 
+        Icon btcIcon = new ImageIcon(btcImage);
+        
+        Image ltcImage = Toolkit.getDefaultToolkit().getImage("src\\main\\java\\resources\\ltcImg.png");
+        ltcImage = ltcImage.getScaledInstance(scalar, scalar, scalar); 
+        Icon ltcIcon = new ImageIcon(ltcImage); 
+        
+        Image ethImage = Toolkit.getDefaultToolkit().getImage("src\\main\\java\\resources\\ethImg.png");
+        ethImage = ethImage.getScaledInstance(scalar, scalar, scalar); 
+        Icon ethIcon = new ImageIcon(ethImage); 
+
+        btcLbl.setIcon(btcIcon);
+        ltcLbl.setIcon(ltcIcon);
+        ethLbl.setIcon(ethIcon); 
     }
     
     public void updateTriangleUI(){
@@ -60,8 +80,7 @@ import Data.Conversions;
             this.btcAmtFinal.setText(btcFinal); 
         }
     }
-
-
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -84,20 +103,18 @@ import Data.Conversions;
         ethAmt = new javax.swing.JLabel();
         ltcAmt = new javax.swing.JLabel();
         btcAmtFinal = new javax.swing.JLabel();
+
         titleLbl.setFont(new java.awt.Font("Sitka Heading", 0, 18)); // NOI18N
         titleLbl.setText("Bitcoin Triangular Arbitrage Bot");
 
         ltcLbl.setFont(new java.awt.Font("Sitka Display", 1, 14)); // NOI18N
         ltcLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        ltcLbl.setText("LTC");
 
         btcLbl.setFont(new java.awt.Font("Sitka Display", 1, 14)); // NOI18N
         btcLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btcLbl.setText("BTC");
 
         ethLbl.setFont(new java.awt.Font("Sitka Display", 1, 14)); // NOI18N
         ethLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        ethLbl.setText("ETH");
 
         btcltcRateLbl.setFont(new java.awt.Font("Sitka Text", 0, 12)); // NOI18N
         btcltcRateLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -140,14 +157,14 @@ import Data.Conversions;
             .addGroup(homeBackgroundLayout.createSequentialGroup()
                 .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(homeBackgroundLayout.createSequentialGroup()
-                    .addGap(363, 363, 363)
+                        .addGap(363, 363, 363)
                         .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(titleLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(homeBackgroundLayout.createSequentialGroup()
                                 .addComponent(btcAmtFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btcLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btcLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btcAmtStart, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(homeBackgroundLayout.createSequentialGroup()
                         .addGap(158, 158, 158)
@@ -160,7 +177,7 @@ import Data.Conversions;
                         .addComponent(ltcLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ltcAmt, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(177, Short.MAX_VALUE))
+                .addContainerGap(177, Short.MAX_VALUE))
         );
         homeBackgroundLayout.setVerticalGroup(
             homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,14 +186,14 @@ import Data.Conversions;
                 .addComponent(titleLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btcLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btcAmtStart, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btcAmtFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                    .addComponent(btcAmtFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btcLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
                 .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btcltcRateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ethbtcRateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(homeBackgroundLayout.createSequentialGroup()
                         .addGap(120, 120, 120)
                         .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -191,6 +208,7 @@ import Data.Conversions;
                             .addComponent(ethAmt, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(147, 147, 147))))
         );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
