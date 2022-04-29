@@ -16,6 +16,12 @@
             <artifactId>binance-api-client</artifactId>
             <version>2.17.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.weisj</groupId>
+            <artifactId>darklaf-core</artifactId>
+            <version>2.7.2</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
     <name>Final Project</name>
 </project>

@@ -8,11 +8,20 @@ package UI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon; 
 import javax.swing.Timer;
 import java.util.*;
 import java.util.ArrayList; 
 import javax.swing.DefaultListModel;
 
+import com.github.weisj.darklaf.LafManager;
+import com.github.weisj.darklaf.settings.ThemeSettings;
+import com.github.weisj.darklaf.theme.DarculaTheme;
+import com.github.weisj.darklaf.theme.HighContrastDarkTheme;
+import com.github.weisj.darklaf.theme.HighContrastLightTheme;
+import com.github.weisj.darklaf.theme.SolarizedLightTheme;
+import com.github.weisj.darklaf.theme.info.DefaultThemeProvider;
 
 /**
  *
@@ -28,12 +37,17 @@ public class HomeWindow extends javax.swing.JFrame {
     public HomeWindow() {
         initComponents();
         
+        DarculaTheme drac = new DarculaTheme();
+        LafManager.install(drac);
+        LafManager.setTheme(drac);
+        
         int delay = 100; 
         ActionListener taskPerformer = new ActionListener(){
             public void actionPerformed(ActionEvent evt){
                 updateHomeUI();
             }
         };
+        
         this.timer = new javax.swing.Timer(delay, taskPerformer);
         this.timer.setInitialDelay(0);
         this.timer.start();
