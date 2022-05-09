@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Owner
+ * @author Tyler Davis
  */
 public class TradingAlgo implements Runnable{
     
@@ -38,21 +38,6 @@ public class TradingAlgo implements Runnable{
         
         this.lot = 1;
         
-//        Trade trade1 = new Trade(1, 1.5);
-//        this.tradeHistory.addTrade(trade1);
-//        
-//        Trade trade2 = new Trade(2, 2.25);
-//        this.tradeHistory.addTrade(trade2);
-//        
-//        Trade trade3 = new Trade(1, .75);
-//        this.tradeHistory.addTrade(trade3);
-//        
-//        Trade trade4 = new Trade(3, 2.5);
-//        this.tradeHistory.addTrade(trade4);
-//        
-//        Trade trade5 = new Trade(1, 1.1);
-//        this.tradeHistory.addTrade(trade5);
-        
     }
     
     private void executeTrade(double amt){
@@ -71,6 +56,7 @@ public class TradingAlgo implements Runnable{
     @Override
     public void run() {
        
+        // Continuous while loop that runs the trading algorithm until it gets turned off
         while(running){
             
             this.conversions.updateAmts();

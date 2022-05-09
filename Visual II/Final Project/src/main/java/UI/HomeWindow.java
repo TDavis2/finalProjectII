@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Owner
+ * @author Tyler Davis
  */
 public class HomeWindow extends javax.swing.JFrame {
     
@@ -50,7 +50,6 @@ public class HomeWindow extends javax.swing.JFrame {
         LafManager.setTheme(drac);
         
         Image btcImage = Toolkit.getDefaultToolkit().getImage("src\\main\\java\\resources\\btcImg.png");
-        // btcImage = btcImage.getScaledInstance(scalar, scalar, scalar); 
         this.setIconImage(btcImage);
         
         int delay = 100; 

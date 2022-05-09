@@ -14,12 +14,14 @@ import java.awt.Toolkit;
 
 /**
  *
- * @author Owner
+ * @author Tyler Davis
  */
  public class TrianglePanel extends javax.swing.JPanel {
 
     private Prices prices; 
     private Conversions conversions;
+    
+    private boolean running; 
     
     /**
     * Creates new form Triangle
@@ -29,6 +31,8 @@ import java.awt.Toolkit;
         int scalar = 58; 
         this.prices = new Prices();
         this.conversions = new Conversions(); 
+        
+        this.running = true; 
         
         initComponents();
         
@@ -43,23 +47,13 @@ import java.awt.Toolkit;
         Image ethImage = Toolkit.getDefaultToolkit().getImage("src\\main\\java\\resources\\ethImg.png");
         ethImage = ethImage.getScaledInstance(scalar, scalar, scalar); 
         Icon ethIcon = new ImageIcon(ethImage); 
-        
-//        Image leftArrowHead = Toolkit.getDefaultToolkit().getImage("src\\main\\java\\resources\\arrowIcon.jpg");
-//        leftArrowHead = leftArrowHead.getScaledInstance(scalar, scalar, scalar); 
-//        Icon leftArrowHeadIcon = new ImageIcon(leftArrowHead);
-//        
-//        Image leftArrowTail = Toolkit.getDefaultToolkit().getImage("src\\main\\java\\resources\\arrowIcon.jpg");
-//        leftArrowTail = leftArrowTail.getScaledInstance(scalar, scalar, scalar); 
-//        Icon leftArrowTailIcon = new ImageIcon(leftArrowTail);
 
         btcLbl.setIcon(btcIcon);
         ltcLbl.setIcon(ltcIcon);
         ethLbl.setIcon(ethIcon); 
         
-//        leftArrowTailLbl.setIcon(leftArrowTailIcon);
-//        leftArrowHeadLbl.setIcon(leftArrowHeadIcon);
         
-        if(1 == 1)
+        if(running)
             startStopBtn.setText("Stop");
         else
             startStopBtn.setText("Start");
@@ -95,7 +89,7 @@ import java.awt.Toolkit;
             String btcFinal = String.format("%.5f", this.conversions.getbtcFinal());
             this.btcAmtFinal.setText(btcFinal); 
         }
-        if(1 == 1)
+        if(running)
             startStopBtn.setText("Stop");
         else
             startStopBtn.setText("Start");
@@ -258,6 +252,12 @@ import java.awt.Toolkit;
     }// </editor-fold>//GEN-END:initComponents
 
     private void startStopBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startStopBtnActionPerformed
+        if(running){
+            this.running = false;
+        }
+        else{
+            this.running = true; 
+        }
         
         updateTriangleUI();
     }//GEN-LAST:event_startStopBtnActionPerformed

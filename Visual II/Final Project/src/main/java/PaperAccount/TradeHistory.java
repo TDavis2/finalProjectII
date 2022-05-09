@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  *
- * @author Owner
+ * @author Tyler Davis
  * 
  */
 public class TradeHistory {
@@ -27,13 +27,14 @@ public class TradeHistory {
     
     private TradeHistory(){
         this.tradeList = new ArrayList<Trade>();
-        this.syncList = Collections.synchronizedList(tradeList);
+        this.syncList = Collections.synchronizedList(tradeList); // Synchronized list of trades
         
         this.numTrades = 0; 
         this.tradesSent = 0; 
         this.sendAllCounter = 0; 
     }
     
+    // Gets a trade at a specific index
     public Trade getTradeNum(int index){
         synchronized(this.syncList){
             return this.syncList.get(index);
@@ -41,14 +42,11 @@ public class TradeHistory {
     }
     
     public void addTrade(Trade newTrade){
-        
         synchronized(this.syncList){
-            // this.syncList.add(newTrade);
             this.tradeList.add(newTrade);
             
             this.numTrades++;
         }
-        
     }
     
     public static TradeHistory getInstance(){

@@ -1,0 +1,8 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}
+${licensePrefix} 	Author: Tyler Davis
+<#if licenseLast??>
+${licenseLast}
+</#if>

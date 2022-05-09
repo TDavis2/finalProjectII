@@ -24,7 +24,7 @@ import java.util.Set;
 
 /**
  *
- * @author Owner
+ * @author Tyler Davis
  */
 public class HTTPServer {
     
@@ -77,6 +77,7 @@ public class HTTPServer {
         return map;
     }
     
+    // Sends the new trades to the client
     public static void handleGetTrade(HttpExchange t) throws IOException{
         
         OutputStream os = t.getResponseBody();
@@ -92,6 +93,7 @@ public class HTTPServer {
         
     }
     
+    // Sends the number of new trades in the server to the client
     public static void handleGetNumTrades(HttpExchange t) throws IOException{
         OutputStream os = t.getResponseBody();
         int tradesToSend = TradeHistory.getInstance().getTrades() - TradeHistory.getInstance().getTradesSent();
@@ -116,6 +118,7 @@ public class HTTPServer {
         os.close();
     }
     
+    // Sends the number of total trades in trade history to the client
     public static void handleGetTotalTrades(HttpExchange t) throws IOException{
         OutputStream os = t.getResponseBody();
         int tradesToSend = TradeHistory.getInstance().getTrades();
@@ -140,6 +143,7 @@ public class HTTPServer {
         os.close();
     }
     
+    // Sends all the trades in trade history to the client
     public static void handleSendAllTrades(HttpExchange t) throws IOException{
         OutputStream os = t.getResponseBody();
         

@@ -28,7 +28,7 @@ import java.awt.event.ActionListener;
 
 /**
  *
- * @author Owner
+ * @author Tyler Davis
  */
 public class AccountPanel extends javax.swing.JPanel {
 
@@ -94,6 +94,7 @@ public class AccountPanel extends javax.swing.JPanel {
         this.timer.start();
     }
     
+    // Called when app is run for the first time to load all of the servers trade history
     private void initializeTradeList(){
         try{
             InputStream is = new URL("http://127.0.0.1:9000/getalltrades").openStream();
@@ -114,6 +115,7 @@ public class AccountPanel extends javax.swing.JPanel {
         }
     }
     
+    // Called repeatedly after the trade history is read in to check for new trades
     private void findNewTrades(){
 
         try{
@@ -134,14 +136,13 @@ public class AccountPanel extends javax.swing.JPanel {
         }
     }
     
+    // Connects to the servers context that sends the entire trade history
     private void getAllTrades(){
         try{
             InputStream is = new URL("http://127.0.0.1:9000/sendalltrades").openStream();
             InputStreamReader isr = new InputStreamReader(is); 
             Trade.TradeData data = this.gson.fromJson(isr, Trade.TradeData.class);
             Trade trade = new Trade(data);
-            trade.setStart(trade.getStart() * this.lot);
-            trade.setFinal(trade.getFinal() * this.lot); 
             newTrade(trade); 
         } catch (MalformedURLException ex) {
             Logger.getLogger(AccountPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -150,6 +151,7 @@ public class AccountPanel extends javax.swing.JPanel {
         }
     }
     
+    // Connects to the servers context that sends only the most recent trades
     private void getTrades(){
         
         try{
@@ -160,6 +162,7 @@ public class AccountPanel extends javax.swing.JPanel {
             Trade trade = new Trade(data);
             trade.setStart(trade.getStart() * this.lot);
             trade.setFinal(trade.getFinal() * this.lot); 
+            trade.setGain(trade.getGain() * this.lot);
             newTrade(trade); 
         } catch (MalformedURLException ex) {
             Logger.getLogger(AccountPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -168,6 +171,7 @@ public class AccountPanel extends javax.swing.JPanel {
         }
     }
     
+    // Private class for reading in number of trades from Gson
     private static class GetNumTrades{
         private int numTrades;
         public int getNumTrades(){
@@ -224,16 +228,6 @@ public class AccountPanel extends javax.swing.JPanel {
         
     }
     
-    private void resetAccountMetrics(){
-        this.balance = 5; 
-        this.numTrades = 0;
-        this.numWins = 0;
-        this.winRate = 0;
-        this.avgTrade = 0; 
-        this.totalGain = 0;
-        this.percentGain = 0; 
-    }
-    
     public void newTrade(Trade newTrade){
         String start = String.format("%.5f", newTrade.getStart());
         this.startDLM.insertElementAt(start, 0);
@@ -245,7 +239,7 @@ public class AccountPanel extends javax.swing.JPanel {
         this.gainDLM.insertElementAt(gain, 0); 
         
         String percent = String.format("%.5f", newTrade.getPercent());
-        this.percentDLM.insertElementAt(percent, 0); 
+        this.percentDLM.insertElementAt(percent + "%", 0); 
         
         this.dateDLM.insertElementAt(newTrade.getDate(), 0); 
         
@@ -265,8 +259,17 @@ public class AccountPanel extends javax.swing.JPanel {
         this.speedDLM.clear();
         
         resetAccountMetrics();
-        
         updateAccountUI();
+    }
+    
+    private void resetAccountMetrics(){
+        this.balance = 5; 
+        this.numTrades = 0;
+        this.numWins = 0;
+        this.winRate = 0;
+        this.avgTrade = 0; 
+        this.totalGain = 0;
+        this.percentGain = 0; 
     }
     
     private void dummyTrade(){
@@ -610,6 +613,11 @@ public class AccountPanel extends javax.swing.JPanel {
         // Prompt user for new lot allocation
         String lot = JOptionPane.showInputDialog(this, "Enter Desired Lot Amount", "Set Lot", 3);
         float setLot = Float.parseFloat(lot);
+        
+        while(setLot < 0 || this.balance < setLot){
+            lot = JOptionPane.showInputDialog(this, "Enter Valid Lot Amount", "Set Lot", 3);
+            setLot = Float.parseFloat(lot);
+        }
         
         this.lot = setLot;
         updateAccountUI();

@@ -11,10 +11,11 @@ import java.time.format.DateTimeFormatter;
 
 /**
  *
- * @author Owner
+ * @author Tyler Davis
  */
 public class Trade {
     
+    // For sending trade data through Json
     public static class TradeData{
         private double startAmt;
         private double finalAmt;
@@ -29,6 +30,7 @@ public class Trade {
     private String tradeDate;
     private String tradeTime;
     
+    // Constructor for making a new trade in the server
     public Trade(double start, double end){
         this.startAmt = start;
         this.finalAmt = end;
@@ -41,6 +43,7 @@ public class Trade {
         System.out.println(this.tradeTime);
     }
     
+    // Constructor for receiving trade data from the server
     public Trade(TradeData data){
         
         this.startAmt = data.startAmt;
@@ -52,6 +55,7 @@ public class Trade {
         
     }
     
+    // Formats a trade for Json to be sent from the server to the client
     public String toJSON(){
         
         StringBuilder json = new StringBuilder();
@@ -97,6 +101,10 @@ public class Trade {
     
     public double getGain(){
         return this.gain;
+    }
+    
+    public void setGain(double val){
+        this.gain = val;
     }
     
     public double getPercent(){
