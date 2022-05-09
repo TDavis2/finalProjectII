@@ -20,6 +20,7 @@ public class TradeHistory {
     // Used to calculate performance metrics
     private int numTrades;
     private int tradesSent; 
+    private int sendAllCounter;
     
     private ArrayList<Trade> tradeList;
     private List<Trade> syncList;
@@ -30,6 +31,7 @@ public class TradeHistory {
         
         this.numTrades = 0; 
         this.tradesSent = 0; 
+        this.sendAllCounter = 0; 
     }
     
     public Trade getTradeNum(int index){
@@ -68,10 +70,23 @@ public class TradeHistory {
         this.tradesSent++;
     }
     
+    public int getSendAllCounter(){
+        return this.sendAllCounter;
+    }
+    
+    public void incrementSendAllCounter(){
+        this.sendAllCounter++;
+    }
+    
+    public void resetSendAllCounter(){
+        this.sendAllCounter = 0;
+    }
+    
     public void resetAccount(){
         this.tradeList.clear();
         this.numTrades = 0;
         this.tradesSent = 0; 
+        this.sendAllCounter = 0;
     }
     
 }

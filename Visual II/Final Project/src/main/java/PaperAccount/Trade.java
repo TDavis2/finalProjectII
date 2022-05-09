@@ -83,8 +83,16 @@ public class Trade {
         return this.startAmt;
     }
     
+    public void setStart(double val){
+        this.startAmt = val;
+    }
+    
     public double getFinal(){
         return this.finalAmt;
+    }
+    
+    public void setFinal(double val){
+        this.finalAmt = val;
     }
     
     public double getGain(){

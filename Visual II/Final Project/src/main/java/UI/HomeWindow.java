@@ -26,6 +26,8 @@ import com.github.weisj.darklaf.theme.HighContrastDarkTheme;
 import com.github.weisj.darklaf.theme.HighContrastLightTheme;
 import com.github.weisj.darklaf.theme.SolarizedLightTheme;
 import com.github.weisj.darklaf.theme.info.DefaultThemeProvider;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -46,6 +48,10 @@ public class HomeWindow extends javax.swing.JFrame {
         DarculaTheme drac = new DarculaTheme();
         LafManager.install(drac);
         LafManager.setTheme(drac);
+        
+        Image btcImage = Toolkit.getDefaultToolkit().getImage("src\\main\\java\\resources\\btcImg.png");
+        // btcImage = btcImage.getScaledInstance(scalar, scalar, scalar); 
+        this.setIconImage(btcImage);
         
         int delay = 100; 
         ActionListener taskPerformer = (ActionEvent evt) -> {

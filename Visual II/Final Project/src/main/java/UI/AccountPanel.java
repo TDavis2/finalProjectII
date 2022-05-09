@@ -79,7 +79,7 @@ public class AccountPanel extends javax.swing.JPanel {
         
         this.gson = new Gson();
         
-        findNewTrades();
+        initializeTradeList();
         
         updateAccountUI();
         
@@ -90,8 +90,28 @@ public class AccountPanel extends javax.swing.JPanel {
         };
         
         this.timer = new javax.swing.Timer(delay, taskPerformer);
-        this.timer.setInitialDelay(0);
+        this.timer.setInitialDelay(10000);
         this.timer.start();
+    }
+    
+    private void initializeTradeList(){
+        try{
+            InputStream is = new URL("http://127.0.0.1:9000/getalltrades").openStream();
+            InputStreamReader isr = new InputStreamReader(is); 
+            
+            GetNumTrades trades = this.gson.fromJson(isr, GetNumTrades.class);
+            
+            int numTrades = trades.getNumTrades();
+            System.out.println("There are " + numTrades + " trades in Trade History"); 
+            
+            for (int i = 0; i < numTrades; i++) {
+                getAllTrades(); 
+            }
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(AccountPanel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(AccountPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private void findNewTrades(){
@@ -103,7 +123,6 @@ public class AccountPanel extends javax.swing.JPanel {
             GetNumTrades trades = this.gson.fromJson(isr, GetNumTrades.class);
             
             int numTrades = trades.getNumTrades();
-            System.out.println("There are " + numTrades + " new trades"); 
             
             for (int i = 0; i < numTrades; i++) {
                 getTrades(); 
@@ -115,13 +134,32 @@ public class AccountPanel extends javax.swing.JPanel {
         }
     }
     
+    private void getAllTrades(){
+        try{
+            InputStream is = new URL("http://127.0.0.1:9000/sendalltrades").openStream();
+            InputStreamReader isr = new InputStreamReader(is); 
+            Trade.TradeData data = this.gson.fromJson(isr, Trade.TradeData.class);
+            Trade trade = new Trade(data);
+            trade.setStart(trade.getStart() * this.lot);
+            trade.setFinal(trade.getFinal() * this.lot); 
+            newTrade(trade); 
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(AccountPanel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(AccountPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     private void getTrades(){
         
         try{
+            System.out.println("!!!!!   New Trade   !!!!!"); 
             InputStream is = new URL("http://127.0.0.1:9000/trades").openStream();
             InputStreamReader isr = new InputStreamReader(is); 
             Trade.TradeData data = this.gson.fromJson(isr, Trade.TradeData.class);
             Trade trade = new Trade(data);
+            trade.setStart(trade.getStart() * this.lot);
+            trade.setFinal(trade.getFinal() * this.lot); 
             newTrade(trade); 
         } catch (MalformedURLException ex) {
             Logger.getLogger(AccountPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -574,6 +612,7 @@ public class AccountPanel extends javax.swing.JPanel {
         float setLot = Float.parseFloat(lot);
         
         this.lot = setLot;
+        updateAccountUI();
     }//GEN-LAST:event_changeLotBtnActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

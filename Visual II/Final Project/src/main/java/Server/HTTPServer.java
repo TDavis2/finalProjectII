@@ -81,7 +81,6 @@ public class HTTPServer {
         
         OutputStream os = t.getResponseBody();
         
-        System.out.println("Sending trade from index: " + TradeHistory.getInstance().getTradesSent());
         Trade trade = TradeHistory.getInstance().getTradeNum(TradeHistory.getInstance().getTradesSent());
         TradeHistory.getInstance().incrementTradesSent();
         
@@ -117,6 +116,48 @@ public class HTTPServer {
         os.close();
     }
     
+    public static void handleGetTotalTrades(HttpExchange t) throws IOException{
+        OutputStream os = t.getResponseBody();
+        int tradesToSend = TradeHistory.getInstance().getTrades();
+        
+        Headers h = t.getRequestHeaders();
+        
+        StringBuilder json = new StringBuilder();
+        
+        json.append('{');
+        
+        json.append("\"numTrades\":\"");
+        json.append(tradesToSend);
+        json.append("\"");
+            
+        json.append('}');
+        
+        String response = json.toString();
+        
+        t.sendResponseHeaders(200, response.getBytes().length);
+        os.write(response.getBytes());
+       
+        os.close();
+    }
+    
+    public static void handleSendAllTrades(HttpExchange t) throws IOException{
+        OutputStream os = t.getResponseBody();
+        
+        Trade trade = TradeHistory.getInstance().getTradeNum(TradeHistory.getInstance().getSendAllCounter());
+        TradeHistory.getInstance().incrementSendAllCounter();
+        TradeHistory.getInstance().incrementTradesSent();
+        
+        if(TradeHistory.getInstance().getSendAllCounter() == TradeHistory.getInstance().getTrades()){
+            TradeHistory.getInstance().resetSendAllCounter();
+        }
+        
+        Headers h = t.getRequestHeaders();
+        String response = trade.toJSON();
+        t.sendResponseHeaders(200, response.getBytes().length);
+        os.write(response.getBytes());
+        os.close();
+    }
+    
     public static void main(String[] args) throws IOException{
         //ServerExample example = new ServerExample();
         
@@ -125,6 +166,8 @@ public class HTTPServer {
         HttpServer server = HttpServer.create(new InetSocketAddress(9000),0);
         server.createContext("/trades", ( x ) -> { handleGetTrade(x); } );
         server.createContext("/tradestosend", ( x ) -> { handleGetNumTrades(x); } );
+        server.createContext("/getalltrades", ( x ) -> { handleGetTotalTrades(x); } );
+        server.createContext("/sendalltrades", ( x ) -> { handleSendAllTrades(x); } );
         server.createContext("/setlot", ( x ) -> { handleSetLot(x); } );
         server.setExecutor(null); // creates a default executor
         server.start(); 
