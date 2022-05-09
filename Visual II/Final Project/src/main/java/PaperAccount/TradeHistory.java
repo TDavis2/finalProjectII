@@ -6,6 +6,8 @@
 package PaperAccount;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  *
@@ -13,75 +15,63 @@ import java.util.ArrayList;
  * 
  */
 public class TradeHistory {
+    private static TradeHistory instance;
     
     // Used to calculate performance metrics
     private int numTrades;
-    private int numWins; 
-    private double totalGain; 
-    
-    // Performance Metrics
-    private double winRate;
-    private double avgTrade; 
+    private int tradesSent; 
     
     private ArrayList<Trade> tradeList;
+    private List<Trade> syncList;
     
-    public TradeHistory(){
+    private TradeHistory(){
         this.tradeList = new ArrayList<Trade>();
+        this.syncList = Collections.synchronizedList(tradeList);
         
         this.numTrades = 0; 
-        this.numWins = 0;
-        this.totalGain = 0; 
-        this.winRate = 0; 
-        this.avgTrade = 0; 
+        this.tradesSent = 0; 
+    }
+    
+    public Trade getTradeNum(int index){
+        synchronized(this.syncList){
+            return this.syncList.get(index);
+        }
+    }
+    
+    public void addTrade(Trade newTrade){
+        
+        synchronized(this.syncList){
+            // this.syncList.add(newTrade);
+            this.tradeList.add(newTrade);
+            
+            this.numTrades++;
+        }
+        
+    }
+    
+    public static TradeHistory getInstance(){
+        if(instance == null)
+            instance = new TradeHistory();
+        
+        return instance; 
     }
     
     public int getTrades(){
         return this.numTrades;
     }
     
-    public int getWins(){
-        return this.numWins;
+    public int getTradesSent(){
+        return this.tradesSent;
     }
     
-    public double getTotalGain(){
-        return this.totalGain;
-    }
-    
-    public void addTrade(Trade newTrade){
-        // Add new trade to arraylist
-        this.tradeList.add(newTrade);
-        
-        // Track Overall Metrics 
-        this.numTrades++;
-        if(newTrade.getGain() > 0)
-            this.numWins++;
-        this.totalGain += newTrade.getGain(); 
-        calculatePerformanceMetrics();
-    }
-    
-    public double getWinRate(){
-        return this.winRate;
-    }
-    
-    public double getAvgTrade(){
-        return this.avgTrade; 
-    }
-    
-    private void calculatePerformanceMetrics(){
-        this.winRate = ((double)this.numWins / this.numTrades) * 100; 
-        System.out.println("Num Wins: " + this.numWins);
-        System.out.println("Num Trades: " + this.numTrades);
-        System.out.println("AVG: " + this.numWins / this.numTrades);
-        this.avgTrade = this.totalGain / this.numTrades; 
+    public void incrementTradesSent(){
+        this.tradesSent++;
     }
     
     public void resetAccount(){
         this.tradeList.clear();
         this.numTrades = 0;
-        this.numWins = 0;
-        this.totalGain = 0;
-        this.winRate = 0; 
-        this.avgTrade = 0; 
+        this.tradesSent = 0; 
     }
     
 }

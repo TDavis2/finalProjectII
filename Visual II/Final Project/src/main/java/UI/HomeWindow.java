@@ -5,14 +5,18 @@
  */
 package UI;
 
+import Server.HTTPServer;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.*;
+import java.util.ArrayList; 
+import java.io.IOException;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon; 
 import javax.swing.Timer;
-import java.util.*;
-import java.util.ArrayList; 
+
 import javax.swing.DefaultListModel;
 
 import com.github.weisj.darklaf.LafManager;
@@ -22,6 +26,8 @@ import com.github.weisj.darklaf.theme.HighContrastDarkTheme;
 import com.github.weisj.darklaf.theme.HighContrastLightTheme;
 import com.github.weisj.darklaf.theme.SolarizedLightTheme;
 import com.github.weisj.darklaf.theme.info.DefaultThemeProvider;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -34,7 +40,7 @@ public class HomeWindow extends javax.swing.JFrame {
     /**
      * Creates new form Home
      */
-    public HomeWindow() {
+    public HomeWindow() throws IOException {
         initComponents();
         
         DarculaTheme drac = new DarculaTheme();
@@ -42,10 +48,10 @@ public class HomeWindow extends javax.swing.JFrame {
         LafManager.setTheme(drac);
         
         int delay = 100; 
-        ActionListener taskPerformer = new ActionListener(){
-            public void actionPerformed(ActionEvent evt){
-                updateHomeUI();
-            }
+        ActionListener taskPerformer = (ActionEvent evt) -> {
+            updateHomeUI();
+            
+            
         };
         
         this.timer = new javax.swing.Timer(delay, taskPerformer);
@@ -55,7 +61,7 @@ public class HomeWindow extends javax.swing.JFrame {
     
     public void updateHomeUI(){
         this.triangle.updateTriangleUI();
-        this.account1.updateAccountUI();
+        
     }
     
     
@@ -149,7 +155,11 @@ public class HomeWindow extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new HomeWindow().setVisible(true);
+                try {
+                    new HomeWindow().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(HomeWindow.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

@@ -18,8 +18,8 @@ import java.awt.Toolkit;
  */
  public class TrianglePanel extends javax.swing.JPanel {
 
-    private static Prices prices; 
-    private static Conversions conversions;
+    private Prices prices; 
+    private Conversions conversions;
     
     /**
     * Creates new form Triangle
@@ -43,10 +43,26 @@ import java.awt.Toolkit;
         Image ethImage = Toolkit.getDefaultToolkit().getImage("src\\main\\java\\resources\\ethImg.png");
         ethImage = ethImage.getScaledInstance(scalar, scalar, scalar); 
         Icon ethIcon = new ImageIcon(ethImage); 
+        
+        Image leftArrowHead = Toolkit.getDefaultToolkit().getImage("src\\main\\java\\resources\\leftArrowIconHead.jpg");
+        leftArrowHead = leftArrowHead.getScaledInstance(scalar, scalar, scalar); 
+        Icon leftArrowHeadIcon = new ImageIcon(leftArrowHead);
+        
+        Image leftArrowTail = Toolkit.getDefaultToolkit().getImage("src\\main\\java\\resources\\leftArrowIconTail.jpg");
+        leftArrowTail = leftArrowTail.getScaledInstance(scalar, scalar, scalar); 
+        Icon leftArrowTailIcon = new ImageIcon(leftArrowTail);
 
         btcLbl.setIcon(btcIcon);
         ltcLbl.setIcon(ltcIcon);
         ethLbl.setIcon(ethIcon); 
+        
+        leftArrowTailLbl.setIcon(leftArrowTailIcon);
+        leftArrowHeadLbl.setIcon(leftArrowHeadIcon);
+        
+        if(1 == 1)
+            startStopBtn.setText("Stop");
+        else
+            startStopBtn.setText("Start");
     }
     
     public void updateTriangleUI(){
@@ -70,17 +86,20 @@ import java.awt.Toolkit;
             String btcStart = String.format("%.5f", this.conversions.getbtcStart());
             this.btcAmtStart.setText(btcStart);
 
-            String ltcAmt = String.format("%.5f", this.conversions.getltcAmt());
+            String ltcAmt = String.format("%.5f", this.conversions.getltcAmt()); 
             this.ltcAmt.setText(ltcAmt);
 
             String ethAmt = String.format("%.5f", this.conversions.getethAmt());
             this.ethAmt.setText(ethAmt);
-
+            
             String btcFinal = String.format("%.5f", this.conversions.getbtcFinal());
             this.btcAmtFinal.setText(btcFinal); 
         }
+        if(1 == 1)
+            startStopBtn.setText("Stop");
+        else
+            startStopBtn.setText("Start");
     }
-    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -103,6 +122,9 @@ import java.awt.Toolkit;
         ethAmt = new javax.swing.JLabel();
         ltcAmt = new javax.swing.JLabel();
         btcAmtFinal = new javax.swing.JLabel();
+        leftArrowHeadLbl = new javax.swing.JLabel();
+        leftArrowTailLbl = new javax.swing.JLabel();
+        startStopBtn = new javax.swing.JButton();
 
         titleLbl.setFont(new java.awt.Font("Sitka Heading", 0, 18)); // NOI18N
         titleLbl.setText("Bitcoin Triangular Arbitrage Bot");
@@ -144,16 +166,21 @@ import java.awt.Toolkit;
         btcAmtFinal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btcAmtFinal.setText("");
 
+        leftArrowHeadLbl.setText("\"");
+
+        leftArrowTailLbl.setText("\"");
+
+        startStopBtn.setText("Start");
+        startStopBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startStopBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout homeBackgroundLayout = new javax.swing.GroupLayout(homeBackground);
         homeBackground.setLayout(homeBackgroundLayout);
         homeBackgroundLayout.setHorizontalGroup(
             homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homeBackgroundLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(ethbtcRateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(163, 163, 163)
-                .addComponent(btcltcRateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(377, 377, 377))
             .addGroup(homeBackgroundLayout.createSequentialGroup()
                 .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(homeBackgroundLayout.createSequentialGroup()
@@ -163,21 +190,38 @@ import java.awt.Toolkit;
                             .addGroup(homeBackgroundLayout.createSequentialGroup()
                                 .addComponent(btcAmtFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btcLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btcAmtStart, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(startStopBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(homeBackgroundLayout.createSequentialGroup()
+                                        .addComponent(btcLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btcAmtStart, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addGroup(homeBackgroundLayout.createSequentialGroup()
                         .addGap(158, 158, 158)
                         .addComponent(ethAmt, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ethLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(149, 149, 149)
-                        .addComponent(ltcethRateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(homeBackgroundLayout.createSequentialGroup()
+                                .addGap(149, 149, 149)
+                                .addComponent(ltcethRateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(homeBackgroundLayout.createSequentialGroup()
+                                .addGap(43, 43, 43)
+                                .addComponent(leftArrowHeadLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 175, Short.MAX_VALUE)
                         .addComponent(ltcLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ltcAmt, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(177, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homeBackgroundLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(leftArrowTailLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(homeBackgroundLayout.createSequentialGroup()
+                        .addComponent(ethbtcRateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(163, 163, 163)
+                        .addComponent(btcltcRateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(377, 377, 377))
         );
         homeBackgroundLayout.setVerticalGroup(
             homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -194,19 +238,28 @@ import java.awt.Toolkit;
                     .addComponent(btcltcRateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ethbtcRateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(homeBackgroundLayout.createSequentialGroup()
-                        .addGap(120, 120, 120)
-                        .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(ltcLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ethLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ltcethRateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(171, 171, 171))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homeBackgroundLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(ltcAmt, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(ethAmt, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(147, 147, 147))))
+                        .addGap(147, 147, 147))
+                    .addGroup(homeBackgroundLayout.createSequentialGroup()
+                        .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(homeBackgroundLayout.createSequentialGroup()
+                                .addGap(120, 120, 120)
+                                .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(ltcLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(ethLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(ltcethRateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(homeBackgroundLayout.createSequentialGroup()
+                                .addGap(156, 156, 156)
+                                .addGroup(homeBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(leftArrowHeadLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(leftArrowTailLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
+                        .addComponent(startStopBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -225,6 +278,11 @@ import java.awt.Toolkit;
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void startStopBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startStopBtnActionPerformed
+        
+        updateTriangleUI();
+    }//GEN-LAST:event_startStopBtnActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel btcAmtFinal;
     private javax.swing.JLabel btcAmtStart;
@@ -234,9 +292,12 @@ import java.awt.Toolkit;
     private javax.swing.JLabel ethLbl;
     private javax.swing.JLabel ethbtcRateLbl;
     private javax.swing.JPanel homeBackground;
+    private javax.swing.JLabel leftArrowHeadLbl;
+    private javax.swing.JLabel leftArrowTailLbl;
     private javax.swing.JLabel ltcAmt;
     private javax.swing.JLabel ltcLbl;
     private javax.swing.JLabel ltcethRateLbl;
+    private javax.swing.JButton startStopBtn;
     private javax.swing.JLabel titleLbl;
     // End of variables declaration//GEN-END:variables
 }
