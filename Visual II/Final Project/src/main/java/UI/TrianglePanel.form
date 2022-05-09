@@ -37,13 +37,6 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="ethbtcRateLbl" min="-2" pref="64" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="163" max="-2" attributes="0"/>
-                  <Component id="btcltcRateLbl" min="-2" pref="89" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="377" max="-2" attributes="0"/>
-              </Group>
               <Group type="102" alignment="0" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
@@ -53,9 +46,14 @@
                               <Group type="102" alignment="1" attributes="0">
                                   <Component id="btcAmtFinal" min="-2" pref="84" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="btcLbl" min="-2" pref="76" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" max="-2" attributes="0"/>
-                                  <Component id="btcAmtStart" min="-2" pref="84" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="startStopBtn" min="-2" pref="100" max="-2" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <Component id="btcLbl" min="-2" pref="76" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" max="-2" attributes="0"/>
+                                          <Component id="btcAmtStart" min="-2" pref="84" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
                               </Group>
                           </Group>
                       </Group>
@@ -73,6 +71,13 @@
                       </Group>
                   </Group>
                   <EmptySpace pref="177" max="32767" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Component id="ethbtcRateLbl" min="-2" pref="64" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="163" max="-2" attributes="0"/>
+                  <Component id="btcltcRateLbl" min="-2" pref="89" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="377" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -93,6 +98,14 @@
                       <Component id="ethbtcRateLbl" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                   </Group>
                   <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="ltcAmt" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
+                              <Component id="ethAmt" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="147" max="-2" attributes="0"/>
+                      </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="120" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -100,15 +113,9 @@
                               <Component id="ethLbl" alignment="3" min="-2" pref="59" max="-2" attributes="0"/>
                               <Component id="ltcethRateLbl" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="171" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="ltcAmt" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
-                              <Component id="ethAmt" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="147" max="-2" attributes="0"/>
+                          <EmptySpace pref="100" max="32767" attributes="0"/>
+                          <Component id="startStopBtn" min="-2" pref="41" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -224,6 +231,14 @@
               <Connection code="&quot;&quot;" type="code"/>
             </Property>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="startStopBtn">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Start"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="startStopBtnActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
